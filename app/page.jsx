@@ -8,20 +8,28 @@ export default function Page() {
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
 
+  // Load historik (endast i browser)
   useEffect(() => {
     const saved = localStorage.getItem("history");
-    if (saved) setHistory(JSON.parse(saved));
+
+    if (saved) {
+      setHistory(JSON.parse(saved));
+    }
   }, []);
 
+  // Spara historik
   const save = (item) => {
     const updated = [item, ...history];
     setHistory(updated);
-    localStorage.setItem("history", JSON.stringify(updated));
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("history", JSON.stringify(updated));
+    }
   };
 
+  // Beräkning (just nu placeholder)
   const calculate = () => {
-    // enkel testlogik först (vi kopplar API sen)
-    const marketPrice = 300; // placeholder
+    const marketPrice = 300; // senare kopplar vi API
 
     const payout = Math.round(marketPrice * 0.7);
     const profit = payout - Number(buyPrice);
